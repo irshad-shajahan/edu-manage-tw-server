@@ -111,9 +111,7 @@ module.exports = {
     try {
       const {name,subject,marks,action,studentId} = req.body;
       console.log(req.body)
-        const check  = await studentModel.findOne({name:name,subject:subject})
-        console.log(check)
-      if(action ==='Add Student'){
+              if(action ==='Add Student'){
         const check  = await studentModel.findOne({name:name,subject:subject})
         if(check){
           check.marks = marks
@@ -124,6 +122,10 @@ module.exports = {
         await newStudent.save()
         return res.status(200).send({msg:'Student added succesfully',added:true,success:true})
       }else if(action === 'Edit Student'){
+        const check  = await studentModel.findOne({name:name,subject:subject})
+        if(check._id !==studentId){
+          return res.status(200).send({msg:'The combination already exists',added:false,success:false})
+        }
         const updatedStudent = await studentModel.findByIdAndUpdate(
           studentId, 
           { 
