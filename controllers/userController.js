@@ -123,7 +123,7 @@ module.exports = {
         return res.status(200).send({msg:'Student added succesfully',added:true,success:true})
       }else if(action === 'Edit Student'){
         const check  = await studentModel.findOne({name:name,subject:subject})
-        if(check._id !==studentId){
+        if (check && !check._id.equals(studentId)){
           return res.status(200).send({msg:'The combination already exists',added:false,success:false})
         }
         const updatedStudent = await studentModel.findByIdAndUpdate(
